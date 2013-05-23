@@ -3,10 +3,8 @@ class Shell:
     def __init__(self):
         self.users = {} ##Users dictionary(key=user-name, value=object-user)
         self.currentUser = None #User who is using the shell,
-                                #      it is set at 'login'
-        self.validCommands = {'login': self.login, 'logout': self.logout,
-                              'exit': self.exit, 
-                              'addUser': self.addUser,
+                                #      it is set at 'loginUser'
+        self.validCommands = {'exit': self.exit, 'addUser': self.addUser,
                               'whoAmI': self.whoAmI, 'setAdmin': self.setAdmin,
                               'changeCurrentUserPW': self.changeCurrentUserPW,
                               'changeUserPW': self.changeUserPW}
@@ -25,32 +23,26 @@ class Shell:
         """
         if self.currentUser.isAdmin:
             self.users.update({user.name:user})
-        else: loggin.info("Current user is not an admin")
+        else: raise Exception("Current user is not an admin")
 
-    def login(self):
+    def loginUser(self, userName):
         """Log in user, ask for pw,
 		compare and if correct set currentUser.
         """
-        userName = input('Login: ')
         if self.existUser(userName):
             user = self.getUser(userName)
             rawI = input('Password: ')
             if rawI == user.pw:
                 self.currentUser = user
-            else: 
-                print("Incorrect password!")
-                self.login()
-        else: 
-            print("User do not exist!")
-            self.login()
-	      
+            else: raise Exception("Incorrect password!")
+        else: raise Exception("User don't exist!")
 
-    def logout(self):
+    def logoutUser(self):
         """Log out user, without any kind of check."""
         if self.currentUser is not None:
             self.currentUser = None
             self.run() #For return to login user
-        else: print("There is not a login user.")
+        else: raise Exception("There isn't a login user")
 
     def whoAmI(self):
         """Returns what user is current using the shell."""
@@ -64,7 +56,7 @@ class Shell:
             user = self.getUser(userName)
             user.isAdmin = bool
             self.updateUser(userName, user)
-        else: print("You are not an admin!")
+        else: raise Exception("Current user is not an admin")
 
     def changeCurrentUserPW(self, oldPW, newPW):
         """For normal user.
@@ -74,7 +66,7 @@ class Shell:
         if currentUser.pw == oldPW:
             currentUser.pw = newPW
             self.updateUser(currentUser.name, currentUser)
-        else: print("Passwords don't match!")
+        else: raise Exception("Passwords don't match")
 
     def changeUserPW(self, userName, newPW):
         """Only for logged in admin user.
@@ -84,7 +76,6 @@ class Shell:
             user = self.getUser(userName)
             user.pw = newPW
             self.updateUser(userName, user)
-        else: print("You are not an admin!")
 
     def existUser(self, userName):
         """Ask if a user is on users dictionary."""
@@ -103,7 +94,8 @@ class Shell:
 
     def run(self):
         """Run while loop for input commands."""
-        self.runCommand('login')
+        loginInput = input('login: ')
+        self.loginUser(loginInput)
         while(True):
             rawI = input('»')
             self.runCommand(rawI)
@@ -117,12 +109,13 @@ class Shell:
             r()
         elif command == '':
             return
-        else: print(str(command) + " is not a valid command!")
+        else: raise Exception("No valid command")
 
 
     def exit(self):
-        """Same as logout"""
-        self.logout()
+        """Exits user - reset prompt"""
+        self.currentUser = None
+        self.run()
 
 
 class User:
