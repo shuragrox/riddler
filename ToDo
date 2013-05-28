@@ -1,0 +1,33 @@
+memoria = [(origen, size)]
+-loadProgram
+-getInstruction
+
+getFreeSize = forEach  -> e.origen + e.size
+
+getFillSize = memoria.size - getFreeSize
+
+PoliticMethods=
+-getFreeSize
+-getFillSize
+-getAmountFreeBlocks
+-getAmountFillBlocks
+-compactToSize
+-compactAll
+
+Program -> [Instruction]
+
+Intruction
+-category -> cpu/IO  
+
+Timer --> RoundRobin -> quantum (default)
+Clock --> 1unit
+
+IRQHandler
+
+IO-Queue
+
+Scheduler -> PQ -> lastProcessID (stop loop)
+
+Kernel -> user-mod / kernel-mod
+-Abstract class
+-Kernel.UserMod / Kernel.KernelMod
