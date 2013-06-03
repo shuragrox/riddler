@@ -9,7 +9,7 @@ class CPU():
         if(self.hasNextInstruction()):
             currentProcessID = self.currentProcess.getID()
             currentProcessPC = self.currentProcess.getPc()
-            instructionToExec = self.memory.getInstruction(self.currentProcessID, self.currentProcessPC)
+            instructionToExec = self.memory.getInstruction(currentProcessID, currentProcessPC)
             instructionToExec.execute()
         else:
             raise ContextSwitchingException
