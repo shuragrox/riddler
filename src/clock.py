@@ -3,12 +3,12 @@ import time
 
 class Clock(Thread):
 
-    def __init__(self, aCPU):
+    def __init__(self, aTimer):
 		Thread.__init__(self)
-		self.CPU = aCPU
-		
+		self.timer = aTimer
+
     def run(self):
     """Sleeps one second, and then execute an instruction on the CPU."""
         while(True):
      	    time.sleep(1)
-            self.CPU.execute()
+            self.timer.clock()

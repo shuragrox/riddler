@@ -1,18 +1,22 @@
 class Memory():
     def __init__(self):
         self.memory = dict()
-		
-    def loadProgram(self, aProgram, anID)
-        if(!self.existsID(anID)):
+
+    def loadProgram(self, aProgram, anID):
+        if !self.existsID(anID):
             self.memory[anID] = aProgram
         else:
             raise ExistentIDException
-			
+
     def getInstruction(self, anID, aPC):
         if(self.existsID(anID)):
             return self.memory[anID] [aPC]
         else:
-            raise nonExistentIDException
-			
+            raise NonExistentIDException
+
     def existsID(self, anID):
         return anID in self.memory
+
+    def getProgramSize(self, anID):
+
+        return len(self.memory[anID])

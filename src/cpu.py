@@ -3,14 +3,15 @@ class CPU():
         self.scheduler = aScheduler
         self.currentProcess = None
         self.memory = aMemory
-    
+
     def execute(self):
         "Executes next instruction of current process"
-        if(self.hasNextInstruction()):
-            currentProcessID = self.currentProcess.getID()
+        currentProcessID = self.currentProcess.getID()
+        if self.currentProcess.hasNextInstruction(self.memory.getProgramSize(currentProcessID)):
             currentProcessPC = self.currentProcess.getPc()
             instructionToExec = self.memory.getInstruction(currentProcessID, currentProcessPC)
             instructionToExec.execute()
+            self.currentProcess.incPc()
         else:
             raise ContextSwitchingException
 
