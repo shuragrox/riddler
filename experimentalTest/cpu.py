@@ -15,6 +15,11 @@ class CPU():
         else:
             raise ContextSwitchingException
 
+    def contextSwitching(self):
+
+        self.scheduler.addProcess(self.currentProcess)
+        self.getProcess()
+
     def getProcess(self):
         self.setCurrentProcess(self.scheduler.getProcess())
 

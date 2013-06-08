@@ -3,7 +3,7 @@ class Memory():
         self.memory = dict()
 
     def loadProgram(self, aProgram, anID):
-        if !self.existsID(anID):
+        if not self.existsID(anID):
             self.memory[anID] = aProgram
         else:
             raise ExistentIDException
