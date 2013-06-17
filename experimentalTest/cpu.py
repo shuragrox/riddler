@@ -25,3 +25,4 @@ class CPU():
 
     def setCurrentProcess(self, aProcess):
         self.currentProcess = aProcess
+
