@@ -18,5 +18,5 @@ class Memory():
         return anID in self.memory
 
     def getProgramSize(self, anID):
-
         return len(self.memory[anID])
+
