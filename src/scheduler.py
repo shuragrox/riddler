@@ -8,7 +8,7 @@ class Scheduler():
 
     def getProcess(self):
         """ Returns the next process of the rpq """
-        self.rpq.get()
+        return self.rpq.get()
 
     def addProcess(self, aPCB):
         """ Adds an pcb to the rpq """
@@ -29,3 +29,4 @@ class Priority(Scheduler):
 
     def addProcess(self, aPCB):
 	self.rpq.put(aPCB.priority, aPCB.data)
+

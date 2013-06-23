@@ -10,10 +10,7 @@ class Timer():
 
         if self.acc < self.quantum:
             self.acc = self.acc + 1
-            try:
-                self.cpu.execute()
-            except:
-                self.cpu.getProcess()
+            self.cpu.execute()
         else:
             self.cpu.contextSwitching()
             self.acc = 0

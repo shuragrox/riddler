@@ -1,12 +1,12 @@
 class Program():
 
-    def __init__(self, aName: None, aPath: None):
-        self.name = aNme
+    def __init__(self, aName=None, aPath=None):
+        self.name = aName
         self.path = aPath
         self.instructions = []
- 
+
     def length(self):
-        return len(self.getInstruction())
+        return len(self.getInstructions())
 
     def getPath(self):
         return self.path
@@ -42,3 +42,4 @@ class EndInstruction(Instruction):
 
     def execute(self):
         print "END Instruction"
+

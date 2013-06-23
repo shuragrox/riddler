@@ -5,6 +5,7 @@ import scheduler
 import memory
 import programInstruction
 import pcb
+import Queue
 
 """Instanciation of Kernel's components"""
 
@@ -63,5 +64,6 @@ fifo.addProcess(pcb2)
 fifo.addProcess(pcb3)
 
 """Starting up the clock"""
-
 clock.run()
+
+

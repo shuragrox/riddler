@@ -10,7 +10,7 @@ class Memory():
 
     def getInstruction(self, anID, aPC):
         if(self.existsID(anID)):
-            return self.memory[anID] [aPC]
+            return self.memory[anID].getInstruction(aPC)
         else:
             raise NonExistentIDException
 
@@ -18,5 +18,5 @@ class Memory():
         return anID in self.memory
 
     def getProgramSize(self, anID):
-        return len(self.memory[anID])
+        return self.memory[anID].length()
 
