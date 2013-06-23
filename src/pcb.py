@@ -23,3 +23,4 @@ class PCBPriority(PCB):
     def __init__(self, aPid, aPriority):
         PCB.__init__(self,aPid)
         self.priority = aPriority
+
