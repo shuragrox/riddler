@@ -3,16 +3,15 @@
 import Queue
 
 class Scheduler():
-""" This is an abstract class, 
-    with methods for all subclasses. 
-"""
+
+    """ This is an abstract class, with methods for all subclasses. """
 
     def getProcess(self):
-    """ Returns the next process of the rpq """
-        self.rpq.get()	
-	
+        """ Returns the next process of the rpq """
+        self.rpq.get()
+
     def addProcess(self, aPCB):
-    """ Adds an pcb to the rpq """
+        """ Adds an pcb to the rpq """
         self.rpq.put(aPCB)
 
 class Fifo(Scheduler):
@@ -30,6 +29,3 @@ class Priority(Scheduler):
 
     def addProcess(self, aPCB):
 	self.rpq.put(aPCB.priority, aPCB.data)
-
-    def __init__(self):
-        self.rpq = Queue.PriorityQueue()

@@ -8,7 +8,7 @@ class Clock(threading.Thread):
         self.timer = aTimer
 
     def run(self):
-        """Sleeps one second, and then clocks the timer."""
+        """Sleeps one second, and then execute an instruction on the CPU."""
         while(True):
      	    time.sleep(1)
             self.timer.clock()

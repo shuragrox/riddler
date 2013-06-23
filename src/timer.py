@@ -3,7 +3,7 @@ class Timer():
     def __init__(self, aCPU):
 
         self.cpu = aCPU
-        self.quantum = 5
+        self.quantum = 3
         self.acc = 0
 
     def clock(self):
@@ -15,6 +15,6 @@ class Timer():
             except:
                 self.cpu.getProcess()
         else:
-            self.cpu.getProcess()
+            self.cpu.contextSwitching()
             self.acc = 0
 

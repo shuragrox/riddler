@@ -14,7 +14,7 @@ class IO:
     def addPCB(self, aPCB):
         self.readyQueue.append(aPCB)
 
-    def tick(self):
+    def executeIOInstruction(self):
         if not self.currentPCB and self.readyQueue:
             self.currentPCB = self.readyQueue[0]
             del self.readyQueue[0]
@@ -36,5 +36,3 @@ class IO:
     def isIdle(self):
         return not(self.currentPCB or self.readyQueue)
 
-    def stop(self):
-        self.clock.stop() #TODO
