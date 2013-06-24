@@ -25,8 +25,8 @@ class RoundRobin(Scheduler):
 
 class Priority(Scheduler):
     def __init__(self):
-	self.rpq = Queue.PriorityQueue()
+        self.rpq = Queue.PriorityQueue()
 
     def addProcess(self, aPCB):
-	self.rpq.put(aPCB.priority, aPCB.data)
+        self.rpq.put(aPCB.priority, aPCB.data)
 
