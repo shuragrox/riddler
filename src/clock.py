@@ -10,6 +10,6 @@ class Clock(threading.Thread):
     def run(self):
         """Sleeps one second, and then execute an instruction on the CPU."""
         while(True):
-     	    time.sleep(1)
+            time.sleep(1)
             self.timer.clock()
 
