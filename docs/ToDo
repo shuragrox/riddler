@@ -14,20 +14,12 @@ PoliticMethods=
 -compactToSize
 -compactAll
 
-Program -> [Instruction]
-
-Intruction
--category -> cpu/IO  
-
-Timer --> RoundRobin -> quantum (default)
-Clock --> 1unit
-
 IRQHandler
 
-IO-Queue
+---
 
-Scheduler -> PQ -> lastProcessID (stop loop)
+RAM-Memory => Array
 
-Kernel -> user-mod / kernel-mod
--Abstract class
--Kernel.UserMod / Kernel.KernelMod
+IRQ => ExceptionReceiver -> leadTo IRQHandler -> makes actions on kernel (changing mods kernel/user) and cpu (for contextSwith)
+
+Pagination => PagesTable -> Hash over fisic and logic memory.
