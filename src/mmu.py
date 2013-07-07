@@ -43,3 +43,12 @@ class MMU():
     def getAmountFillBlocks(self):
         return len(self.getFillBlocks())
 
+    def compact(self):
+        position = 0
+        for block in self.getFillBlocks():
+            positionBlock = block.getBase()
+            if positionBlock < block.size():
+                i = self.memory.index(positionBlock)
+                self.memory.insert(position, i)
+                position += 1
+
