@@ -5,14 +5,14 @@ class PCB():
         self.base = aBase
         self.size = aSize
 
+    def getSize(self):
+        return self.size
+
+    def size(self):
+        return self.size
+
     def getPc(self):
         return self.pc
-
-    def size():
-        return this.size
-
-    def getSize():
-        return this.size
 
     def incPc(self):
         """"Increases the pc by 1"""

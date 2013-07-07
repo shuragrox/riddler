@@ -44,7 +44,7 @@ class MMU():
     def getAmountFillBlocks(self):
         return len(self.getFillBlocks())
 
-    def compact():
+    def compact(self):
         position = 0
         for block in self.getFillBlocks():
             positionBlock = block.getBase()
