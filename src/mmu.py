@@ -9,6 +9,7 @@ class MMU():
         for instrc in aProgram.getInstructions():
             self.memory.insert(position, instrc)
             position += 1
+        return aBlock.getBase()
 
     def getInstruction(self, aPCB):
         """aPCB must exist in the system"""
