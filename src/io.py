@@ -2,37 +2,25 @@ import clock
 
 class IO:
     
-    def __init__(self, aTimer):
-        self.clock = Clock(aTimer).run()
-        self.kernel = None
+    def __init__(self, irq):
         self.readyQueue = []
         self.currentPCB = None
-
-    def setKernel(self, aKernel):
-        self.kernel = aKernel
+        self.irq = irq
 
     def addPCB(self, aPCB):
         self.readyQueue.append(aPCB)
 
-    def executeIOInstruction(self):
-        if not self.currentPCB and self.readyQueue:
-            self.currentPCB = self.readyQueue[0]
-            del self.readyQueue[0]
+    def execute(self):
+        if currentPCB == None && not len(self.readyQueue) == 0:
+            self.readyQueue.reverse()
+            self.currentPCB = self.readyQueue.pop()
+            self.readyQueue.reverse()
 
-        if ((not self.kernel.isModeKernel()) and bool(self.currentPCB)):
-            self.currentPCB.incPC()
-
-        ##TODO if program has finished, notify to kernel.
-
-    def takeCurrentPCB(self):
-        """ This take out current PCB, returned and reset currentPCB to None """
-        currentPCB = self.currentPCB
-        self.reset()
-        return currentPCB
-
-    def reset(self)
-        self.currentPCB = None
-
-    def isIdle(self):
-        return not(self.currentPCB or self.readyQueue)
+            i = self.resourcesManager.getIOInstruction(aPCB)   
+            i.execute() 
+            self.currentPCB.incPc()
+            self.irq.contextSwitchIO()
+    
+     def reset(self):
+         self.currentPCB = None
 
