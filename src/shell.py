@@ -1,31 +1,75 @@
+import logging
+
 class Shell:
 
     def __init__(self):
+        self.kernel = None
         self.users = {} ##Users dictionary(key=user-name, value=object-user)
         self.currentUser = None #User who is using the shell,
                                 #      it is set at 'login'
-        self.validCommands = {'login': self.login, 'logout': self.logout,
+        self.validCommands = {'login': self.login, 
+                              'logout': self.logout,
                               'exit': self.exit, 
-                              'addUser': self.addUser,
-                              'whoAmI': self.whoAmI, 'setAdmin': self.setAdmin,
-                              'changeCurrentUserPW': self.changeCurrentUserPW,
+                              'help': self.help,
+                              'addUser': self.addUserShell,
+                              'addAdmin': self.addAdminShell,
+                              'removeAdmin': self.removeAdminShell,
+                              'whoAmI': self.whoAmI,
+                              'changeCurrentUserPW': self.changeCurrentUserPWShell,
                               'changeUserPW': self.changeUserPW}
 
-    def addAdmin(self, user):
-        """It is use for first time to add an admin to the shell.
-		An already admin user is add to the users dictionary.
-        """
-        if user.isAdmin:
-            self.updateUser(user.name, user)
-        else: raise Exception("User is not an admin")
+        ##Set up for logging
+        logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
-    def addUser(self, user):
+    def addAdmin(self, userName):
+        """Adds admin privilege to userName on the shell"""
+        self.setAdmin(userName, True)
+
+    def addAdminShell(self):
+        """Gives follow steps for client of the shell"""
+        if self.currentUser.isAdmin():
+            userName = input('Please enter user: ')
+            if self.existUser(userName):
+                self.addAdmin(userName)
+            else:
+                logging.info("Specified user does not exist.")
+        else:
+            logging.info("Current user is not an admin.")
+
+    def removeAdmin(self, userName):
+        """Removes admin privilege to userName on the shell"""
+        self.setAdmin(userName, False)
+    
+    def removeAdminShell(self):
+        """Gives follow steps for client of the shell"""
+        if self.currentUser.isAdmin():
+            userName = input('Please enter user: ')
+            if self.existUser(userName):
+                self.removeAdmin(userName)
+            else:
+                logging.info("Specified user does not exist.")
+        else:
+            logging.info("Current user is not an admin.")
+
+    def addUser(self, userName, userPW):
         """It can only be used by a logged in admin.
 		 to add a new user to the user dictionary.
         """
+        user = User(userName, userPW)
+        self.users.update({user.name:user})
+
+    def addUserShell(self):
+        """Gives follow steps for client of the shell"""
         if self.currentUser.isAdmin:
-            self.users.update({user.name:user})
-        else: loggin.info("Current user is not an admin")
+            userName = input('Please enter new user alias: ')
+            userPW = None
+            if self.existUser(userName):
+                logging.info("User alias already exists.")
+            else:
+                userPW = input("Please enter new user's password: ")
+                self.addUser(userName, userPW)
+        else:
+            logging.info('Current user is not an admin.')
 
     def login(self):
         """Log in user, ask for pw,
@@ -38,13 +82,12 @@ class Shell:
             if rawI == user.pw:
                 self.currentUser = user
             else: 
-                print("Incorrect password!")
+                logging.info("Incorrect password!")
                 self.login()
         else: 
-            print("User do not exist!")
+            logging.info("User does not exist.")
             self.login()
 	      
-
     def logout(self):
         """Log out user, without any kind of check."""
         if self.currentUser is not None:
@@ -60,31 +103,50 @@ class Shell:
         """Only for logged in admin user.
 		set as admin al already added user.
         """
-        if self.currentUser.isAdmin:
+        if self.existUser(userName):
             user = self.getUser(userName)
-            user.isAdmin = bool
+            user.setAdmin(bool)
             self.updateUser(userName, user)
-        else: print("You are not an admin!")
+        else: 
+            logging.info("Sorry, specified user does not exist.")
 
     def changeCurrentUserPW(self, oldPW, newPW):
         """For normal user.
-		change it pw for a new one.
+		change its pw for a new one.
         """
-        currentUser = self.getUser(self.currentUser.name)
-        if currentUser.pw == oldPW:
-            currentUser.pw = newPW
-            self.updateUser(currentUser.name, currentUser)
-        else: print("Passwords don't match!")
+        self.currentUser.pw = newPW
+        self.updateUser(self.currentUser.name, self.currentUser)
+
+    def changeCurrentUserPWShell(self):
+        """Gives follow steps for client on the shell"""
+        oldPW = input("Please enter current password: ")
+        newPW = input("Please enter new password: ")
+        if self.currentUser.pw == oldPW:
+            self.changeCurrentUserPW(newPW)
+        else: 
+            logging.info("Passwords don't match!")
 
     def changeUserPW(self, userName, newPW):
         """Only for logged in admin user.
 		change an user's pw.
         """
+        user = self.getUser(userName)
+        user.pw = newPW
+        self.updateUser(userName, user)
+
+    def changeUserPWShell(self):
+        """Gives follow steps for admin on the shell"""
         if self.currentUser.isAdmin:
-            user = self.getUser(userName)
-            user.pw = newPW
-            self.updateUser(userName, user)
-        else: print("You are not an admin!")
+            userName = input('Please enter target user: ')
+            newPW = None
+            if self.existUser(userName):
+                newPW = input('Please enter target user new password: ')
+                self.changeUserPW(userName, newPW)
+            else:
+                logging.info("Target user does not exist.")
+        else: 
+            logging.info("Sorry, you are not an admin!")
+        
 
     def existUser(self, userName):
         """Ask if a user is on users dictionary."""
@@ -99,7 +161,10 @@ class Shell:
 
     def updateUser(self, userName, user):
         """Update a user's object at the users dictionary."""
-        self.users.update({userName: user})
+        if self.existUser(userName):
+            self.users.update({userName: user})
+        else:
+            logging.info("User does not exist")
 
     def run(self):
         """Run while loop for input commands."""
@@ -117,29 +182,44 @@ class Shell:
             r()
         elif command == '':
             return
-        else: print(str(command) + " is not a valid command!")
-
+        else: print(str(command) + " is not a valid command! Type 'help' for view valid commands.")
 
     def exit(self):
         """Same as logout"""
         self.logout()
 
+    def help(self):
+        """Shows on client screen the list of validCommands"""
+        for command in self.validCommands.keys():
+            print (str(command))
+ 
+    def setKernel(self, kernel):
+        self.kernel = kernel
+
+    def loadProgram(self, aProgram):
+        self.kernel.loadProgram(aProgram)
 
 class User:
-
-    def __init__(self, userName, userPW, adminBool):
+    def __init__(self, userName, userPW):
         """Only for creation.
 		isAdmin variable must be used only by the shell.
         """
         self.name = userName
         self.pw = userPW
-        self.isAdmin = adminBool
+        self.admin = False
 
     def isAdmin(self):
-        return self.isAdmin
+        return self.admin
+
+    def setAdmin(self, bool):
+        self.admin = bool
 
 
-admin = User("admin", "adminPW", True)
-s = Shell()
-s.addAdmin(admin)
-s.run()
+#Initial setup.
+#admin = User("admin", "adminPW")
+#admin.setAdmin(True)
+#s = Shell(aKernel)
+#s.currentUser = admin
+#s.addUser(admin.name, admin.pw)
+#s.setAdmin("admin", True)
+#s.run()

@@ -66,4 +66,3 @@ fifo.addProcess(pcb3)
 """Starting up the clock"""
 clock.run()
 
-
