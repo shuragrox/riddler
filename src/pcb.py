@@ -1,7 +1,15 @@
 class PCB():
-    def __init__(self, aPid):
+    def __init__(self, aPid, aBase, aSize):
         self.pid = aPid
         self.pc = 0
+        self.base = aBase
+        self.size = aSize
+
+    def getSize(self):
+        return self.size
+
+    def size(self):
+        return self.size
 
     def getPc(self):
         return self.pc

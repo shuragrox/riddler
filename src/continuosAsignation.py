@@ -21,7 +21,7 @@ class WorstFit(AsignationFit):
     def loadProgram(self, aProgram, mmu):
         newBlock = None
         for block in mmu.getFreeBlocks():
-            if newBlock = None:
+            if newBlock == None:
                 newBlock = block
             else:
                 if block.size() > newBlock.size():
@@ -52,7 +52,7 @@ class BestFit(AsignationFit):
     def loadProgram(self, aProgram, mmu):
         newBlock = None
         for block in mmu.getFreeBlocks():
-            if newBlock = None:
+            if newBlock == None:
                 newBlock = block
             else:
                 if block.size() >= aProgram.size() && block.size() < newBlock.size():

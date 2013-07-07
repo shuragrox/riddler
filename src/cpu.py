@@ -1,28 +1,21 @@
 class CPU():
-    def __init__(self, aScheduler, aMemory):
+    def __init__(self, aScheduler, aMemory, aIRQ):
         self.scheduler = aScheduler
         self.currentProcess = None
         self.memory = aMemory
+        self.irq = aIRQ
 
     def execute(self):
         """ Executes next instruction of current process """
         if self.currentProcess == None:
-            self.getProcess()
-        currentProcessID = self.currentProcess.getID()
-        if self.currentProcess.hasNextInstruction(self.memory.getProgramSize(currentProcessID)):
+            self.irq.contextSwitch()
+        if self.currentProcess.hasNextInstruction(self.currentProcess.size()):
             currentProcessPC = self.currentProcess.getPc()
-            instructionToExec = self.memory.getInstruction(currentProcessID, currentProcessPC)
+            instructionToExec = self.memory.getInstruction(self.currentProcess)
             instructionToExec.execute()
             self.currentProcess.incPc()
         else:
-            self.contextSwitching()
-
-    def contextSwitching(self):
-        self.scheduler.addProcess(self.currentProcess)
-        self.getProcess()
-
-    def getProcess(self):
-        self.currentProcess = self.scheduler.getProcess()
+            self.irq.contextSwitch()
 
     def setCurrentProcess(self, aProcess):
         self.currentProcess = aProcess

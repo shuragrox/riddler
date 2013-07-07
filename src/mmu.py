@@ -9,6 +9,7 @@ class MMU():
         for instrc in aProgram.getInstructions():
             self.memory.insert(position, instrc)
             position += 1
+        return aBlock.getBase()
 
     def getInstruction(self, aPCB):
         """aPCB must exist in the system"""
@@ -42,4 +43,13 @@ class MMU():
 
     def getAmountFillBlocks(self):
         return len(self.getFillBlocks())
+
+    def compact(self):
+        position = 0
+        for block in self.getFillBlocks():
+            positionBlock = block.getBase()
+            if positionBlock < block.size():
+                i = self.memory.index(positionBlock)
+                self.memory.insert(position, i)
+                position += 1
 

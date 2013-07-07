@@ -1,25 +1,9 @@
-memoria = [(origen, size)]
--loadProgram
--getInstruction
-
-getFreeSize = forEach  -> e.origen + e.size
-
-getFillSize = memoria.size - getFreeSize
-
-PoliticMethods=
--getFreeSize
--getFillSize
--getAmountFreeBlocks
--getAmountFillBlocks
--compactToSize
--compactAll
-
-IRQHandler
-
----
-
-RAM-Memory => Array
-
-IRQ => ExceptionReceiver -> leadTo IRQHandler -> makes actions on kernel (changing mods kernel/user) and cpu (for contextSwith)
-
 Pagination => PagesTable -> Hash over fisic and logic memory.
+
+Fix shell -> add commands -> loadProgram(<aProgram>)
+
+TEST!!!!
+
+Informe.......
+
+Fix UML
