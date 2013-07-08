@@ -2,7 +2,6 @@ import threading
 import time
 
 class Clock(threading.Thread):
-
     def __init__(self, aTimer):
         threading.Thread.__init__(self)
         self.timer = aTimer

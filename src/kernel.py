@@ -1,6 +1,7 @@
 import PCB
 
 class Kernel():
+
     def __init__(self, scheduler, irq, resourcesManager, shell):
         self.scheduler = scheduler
         self.irq = irq
@@ -8,6 +9,7 @@ class Kernel():
         self.shell = shell
         self.kernelMode = false
         self.pid = 0
+        self.resourcesManager.cpu.setKernel(self)
 
     def loadProgram(self, aProgram):
         #Loads a program, return baseDir of that program in the memory
@@ -30,4 +32,7 @@ class Kernel():
 
     def setKernelMode(self, boolean):
         self.kernelMode = boolean
+
+    def isKernelMode(self):
+        return self.kernelMode
 

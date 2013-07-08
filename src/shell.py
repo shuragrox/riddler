@@ -1,6 +1,6 @@
 import logging
 
-class Shell:
+class Shell():
 
     def __init__(self):
         self.kernel = None
@@ -20,6 +20,14 @@ class Shell:
 
         ##Set up for logging
         logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+
+        #Initial setup, adds principal admin.
+        admin = User("admin", "adminPW")
+        admin.setAdmin(True)
+        self.currentUser = admin
+        self.addUser(admin.name, admin.pw)
+        self.setAdmin("admin", True)
+        self.currentUser = None
 
     def addAdmin(self, userName):
         """Adds admin privilege to userName on the shell"""
@@ -215,11 +223,3 @@ class User:
         self.admin = bool
 
 
-#Initial setup.
-#admin = User("admin", "adminPW")
-#admin.setAdmin(True)
-#s = Shell(aKernel)
-#s.currentUser = admin
-#s.addUser(admin.name, admin.pw)
-#s.setAdmin("admin", True)
-#s.run()
