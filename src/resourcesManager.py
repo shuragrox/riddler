@@ -1,11 +1,11 @@
 class ResourcesManager():
-    def __init__(self, io, cpu, memory)
+    def __init__(self, io, cpu, mmu)
         self.io = io
         self.cpu = cpu
-        self.memory = memory
+        self.memory = mmu
 
     def getNextInstruction(self, aPCB):
-        i = self.memory.getInstruction(aPCB)
+        i = self.memory.asignation.memory.getInstruction(aPCB)
         if i.isIO() == true:
             self.io.addPCB(aPCB)
             self.cpu.setCurrentProcess(None)
@@ -15,4 +15,7 @@ class ResourcesManager():
     def getIOInstruction(self, aPCB):
         i = self.memory.getIntruction(aPCB)
         return i
+
+    def loadProgram(self, aProgram):
+        return self.memory.loadProgram(aProgram)
 

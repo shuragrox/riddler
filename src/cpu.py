@@ -1,6 +1,5 @@
 class CPU():
-    def __init__(self, aScheduler, aMemory, aIRQ):
-        self.scheduler = aScheduler
+    def __init__(self, aMemory, aIRQ):
         self.currentProcess = None
         self.memory = aMemory
         self.irq = aIRQ
