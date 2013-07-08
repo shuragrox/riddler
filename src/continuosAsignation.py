@@ -1,4 +1,4 @@
-class ContinuosAsignation:
+class ContinuosAsignation():
     def __init__(self, memory, asignationFit):
         self.memory = memory
         self.asignationFit = asignationFit

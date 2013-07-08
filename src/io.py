@@ -1,7 +1,7 @@
 import clock
 
-class IO:
-    
+class IO():
+
     def __init__(self, irq):
         self.readyQueue = []
         self.currentPCB = None

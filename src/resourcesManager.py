@@ -1,8 +1,10 @@
 class ResourcesManager():
+
     def __init__(self, io, cpu, mmu)
         self.io = io
         self.cpu = cpu
         self.memory = mmu
+        self.cpu.setResourcesManager(self)
 
     def getNextInstruction(self, aPCB):
         i = self.memory.asignation.memory.getInstruction(aPCB)
