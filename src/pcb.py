@@ -18,7 +18,7 @@ class PCB():
         """"Increases the pc by 1"""
         self.pc += 1
 
-    def getID(selflf):
+    def getID(self):
         return self.pid
 
     def getBase(self):
