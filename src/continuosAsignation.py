@@ -1,66 +1,96 @@
 class ContinuosAsignation:
-    def __init__(self, mmu, asignationFit):
-        self.mmu = mmu
+    def __init__(self, memory, asignationFit):
+        self.memory = memory
         self.asignationFit = asignationFit
-
+        self.fillBlocks = []
+    
     def loadProgram(self, aProgram):
-        if (aProgram.length() > self.mmu.size()):
+        if (aProgram.length() > self.memory.size()):
             raise NotEnoughMemoryException()
         else:
-            if (self.mmu.getFreeSize() > aProgram.length()):
-                self.asignationFit.loadProgram(aProgram, self.mmu)
+            if (self.memory.getFreeSize() > aProgram.length()):
+                return self.asignationFit.loadProgram(aProgram, self.memory)
+
+    def compact(self):
+        position = 0
+        for block in self.memory.getFillBlocks():
+            positionBlock = block.getBase()
+            if positionBlock < block.size():
+                i = self.memory.memory.index(positionBlock)
+                self.memory.memory.insert(position, i)
+                position += 1
+
+    def getFreeBlocks(self):
+        freeBlocks = []
+        position = 0
+        if self.getAmountFillBlocks() = 0:
+            freeBlocks.append(Block(position, self.size))
+        else:
+            for block in self.fillBlocks:
+                freeBlocks.append(Block(position, block.getBase() - position))
+                position = block.getBase() + block.size() + 1
+        return freeBlocks
+
+    def getFreeSize():
+        total = 0
+        if self.getAmountFillBlocks() = 0:
+            total = self.size
+        else:
+            for block in self.fillBlocks:
+                total += block.size()
+        return total
+
+    def getFillBlocks(self):
+        return self.fillBlocks
+
+    def getAmountFreeBlocks(self):
+        return len(self.getFreeBlocks())
+
+    def getAmountFillBlocks(self):
+        return len(self.getFillBlocks())
 
 class AsignationFit:
-    def loadProgram(self, aProgram, mmu): 
+    def loadProgram(self, aProgram, memory): 
         pass
 
 class WorstFit(AsignationFit):
-    def __init__(self):
-        AsignationFit.__init__(self)
-
-    def loadProgram(self, aProgram, mmu):
+    def loadProgram(self, aProgram, memory):
         newBlock = None
-        for block in mmu.getFreeBlocks():
+        for block in memory.getFreeBlocks():
             if newBlock == None:
                 newBlock = block
             else:
                 if block.size() > newBlock.size():
                     newBlock = block
         if newBlock.size() >= aProgram.size():
-            mmu.loadProgram(aProgram, newBlock)
+            return memory.loadProgram(aProgram, newBlock)
         else:
-            mmu.compact()
-            self.loadProgram(aProgram, mmu)
+            self.compact()
+            self.loadProgram(aProgram, memory)
 
 class FirstFit(AsignationFit):
-    def __init__(self):
-        AsignationFit.__init__(self)
-
-    def loadProgram(self, aProgram, mmu):
-        for block in mmu.getFreeBlocks():
+    def loadProgram(self, aProgram, memory):
+        for block in memory.getFreeBlocks():
             if block.size() >= aProgram.size():
-                mmu.loadProgram(aProgram, block)
+                return memory.loadProgram(aProgram, block)
                 break
         else:
-            mmu.compact()
-            self.loadProgram(aProgram, mmu)
+            self.compact()
+            self.loadProgram(aProgram, memory)
 
 class BestFit(AsignationFit):
-    def __init__(self):
-        AsignationFit.__init__(self)
-
-    def loadProgram(self, aProgram, mmu):
+    def loadProgram(self, aProgram, memory):
         newBlock = None
-        for block in mmu.getFreeBlocks():
+        for block in memory.getFreeBlocks():
             if newBlock == None:
                 newBlock = block
             else:
                 if block.size() >= aProgram.size() && block.size() < newBlock.size():
                     newBlock = block
         if newBlock.size() < aProgram.size():
-            mmu.compact()
+            self.compact()
         else:
-            mmu.loadProgram(aProgram, newBlock)
+            return memory.loadProgram(aProgram, newBlock)
 
 class NotEnoughMemoryException(Exception):
     def __str__(self):

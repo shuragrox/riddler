@@ -1,11 +1,7 @@
-class IRQ():
-    def __init__(self, handler, kernel):
-        self.handler = handler
-        self.kernel = kernel
-
 class IRQHandler():
     def __init__(self, irq):
         self.irq = irq
+        self.irq.setHandler(self)
 
     def contextSwitch(self):
         #Change to kernel, to kernel mode.
@@ -29,4 +25,15 @@ class IRQHandler():
 
     def timeout(self):
         self.contextSwitch()
+
+class IRQ():
+    def __init__(self):
+        self.handler = None
+        self.kernel = None
+
+    def setKernel(self, aKernel):
+        self.kernel = aKernel
+
+    def setHandler(self, anIRQHandler):
+        self.handler = anIRQHandler
 
