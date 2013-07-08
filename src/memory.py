@@ -4,7 +4,7 @@ class Memory():
         self.memory = []
 
     def loadProgram(self, aProgram, aBlock):
-        """aBlock its used to know the base position 
+        """aBlock its used to know the base position
                 on the memory, where is loaded the first
                       instruc of the program.
         """
