@@ -1,16 +1,20 @@
 class CPU():
 
-    def __init__(self, aIRQ):
+    def __init__(self, anIRQ, anIO, aMMU):
         self.currentProcess = None
-        self.kernel = None
-        self.irq = aIRQ
+        self.irq = anIRQ
+        self.io = anIO
+        self.mmu = aMMU
 
     def execute(self):
+		#Este método necesita ser modificado los pasos a seguir son
+		#Si el current no es None le pide al mmu la próxima instruccion
+		#Si es de cpu la ejecuta, sino la manda a IO
         """ Executes next instruction of current process """
         if not self.kernel.isKernelMode():
             if self.currentProcess == None:
                 self.irq.contextSwitch()
-            if self.currentProcess.hasNextInstruction(self.currentProcess.size):
+            elif self.currentProcess.hasNextInstruction(self.currentProcess.size):
                 currentProcessPC = self.currentProcess.getPc()
                 instructionToExec = self.kernel.resourcesManager.getNextInstruction(self.currentProcess)
                 if not instructionToExec == None:
@@ -18,16 +22,11 @@ class CPU():
                     self.currentProcess.incPc()
             else:
                 self.irq.contextSwitch()
+        else:
+            self.kernel.shell.run()
 
     def setCurrentProcess(self, aProcess):
         self.currentProcess = aProcess
 
     def getCurrentProcess(self):
         return self.currentProcess
-
-    def setKernel(self, aKernel):
-        self.kernel = aKernel
-
-    def canExecute(self):
-        return not self.kernel.isKernelMode()
-
